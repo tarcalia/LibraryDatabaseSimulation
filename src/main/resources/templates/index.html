@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Database</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<br>
+<div>
+    <h2>
+        Library Database<br> <br>
+    </h2>
+    <hr>
+     <p th:text = ${message}> </p>
+    </hr>
+    <form action="uploadBook">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title">
+
+        <label for="isbn">ISBN Nr:</label>
+        <input type="number" id="isbn" name="isbn">
+
+        <label for="genre">Genre:</label>
+        <select name="genre" id="genre">
+            <option th:each="genres: ${genres}" th:value="${genres}" th:text="${genres.label}">
+            </option>
+        </select>
+
+        <label for="author">Authors:</label>
+        <select name="author" id="author">
+            <option th:each="author: ${authors}" th:value="${authors}" th:text="${author.name}">
+            </option>
+        </select>
+
+        <input type="submit" value="Upload Book"><br><br>
+    </form>
+
+    <form action="searchBook">
+        <label for="id">Search book:</label>
+        <input type="number" id="id" name="id" style="width:80%">
+        <input type="submit" value="Search User"><br><br>
+    </form>
+
+    <table>
+        <tr>
+            <th class="isbn">ISBN Number</th>
+            <th class="title">Title</th>
+            <th class="genre">Genre</th>
+            <th class="author">Author</th>
+        </tr>
+        <tr th:each="book: ${books}">
+            <td th:text="${book.ISBNNumber}" />
+            <td th:text="${book.title}" />
+            <td th:text="${book.genre}" />
+            <td th:text="${book.author.name}" />
+        </tr>
+    </table><br><br>
+
+    <form action="addAuthor">
+        <label for="name">Author:</label>
+        <input type="name" id="name" name="name">
+        <input type="submit" value="Add Author">
+    </form>
+
+    <form action="delete">
+        <label for="id">Delete user by id:</label>
+        <input type="number" id="id" name="id"><br><br>
+        <input type="submit" value="Delete User">
+    </form>
+
+</div>
+</body>
+</html>

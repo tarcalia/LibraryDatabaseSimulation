@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Domain class for {@link Author} objects.
@@ -26,9 +26,13 @@ public class Author {
 
     @JsonBackReference
     @OneToMany(mappedBy = "author")
-    private Set<Book> book;
+    private List<Book> book;
 
     public Author() {
+    }
+
+    public Author(String name) {
+        this.name = name;
     }
 
     public Long getAuthorId() {
