@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  */
 @Controller
 public class HomeController {
+    private final String MAIN_PAGE = "index";
     private BookRepository bookRepository;
     private AuthorRepository authorRepository;
 
@@ -31,21 +32,29 @@ public class HomeController {
         model.addAttribute("genres", Arrays.stream(BookGenre.values()).collect(Collectors.toList()));
         model.addAttribute("authors", authorRepository.findAll());
         model.addAttribute("books", bookRepository.findAll());
-        return "index";
+        return MAIN_PAGE;
     }
 
-    @RequestMapping("/upload")
+    @RequestMapping("/uploadBook")
     public String uploadBook(@RequestParam(value = "isbn") String isbn,
                              @RequestParam (value = "title") String title,
                              @RequestParam (value = "genre") String genre,
                              @RequestParam (value = "author") String author,
                              Model model) {
-        bookRepository.save(new Book(Integer.parseInt(isbn), title, BookGenre.valueOf(genre), new Author(author)));
+        Book tempBook = new Book(Integer.parseInt(isbn), title, BookGenre.valueOf(genre), authorRepository.findByName(author));
+        System.out.println(tempBook);
+        bookRepository.save(tempBook);
         model.addAttribute("message", "Book uploaded");
         model.addAttribute("genres", Arrays.stream(BookGenre.values()).collect(Collectors.toList()));
         model.addAttribute("authors", authorRepository.findAll());
         model.addAttribute("books", bookRepository.findAll());
-        return "index";
+        return MAIN_PAGE;
+    }
+
+    @RequestMapping("/deleteBook")
+    public String deleteBook(@RequestParam(value = "isbn") String isbn) {
+        bookRepository.delete(bookRepository.findBook(isbn));
+        return MAIN_PAGE;
     }
 
     @RequestMapping("/addAuthor")
@@ -55,7 +64,7 @@ public class HomeController {
         model.addAttribute("genres", Arrays.stream(BookGenre.values()).collect(Collectors.toList()));
         model.addAttribute("authors", authorRepository.findAll());
         model.addAttribute("books", bookRepository.findAll());
-        return "index";
+        return MAIN_PAGE;
     }
 
 }

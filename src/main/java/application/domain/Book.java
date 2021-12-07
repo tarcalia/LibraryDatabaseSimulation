@@ -13,7 +13,6 @@ import java.util.Objects;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ISBNNumber;
     private String title;
     private BookGenre bookGenre;
@@ -23,19 +22,14 @@ public class Book {
     @JoinColumn(name = "authorId", referencedColumnName = "author_Id")
     private Author author;
 
+    public Book() {
+    }
+
     public Book(Integer ISBNNumber, String title, BookGenre bookGenre, Author author) {
         this.ISBNNumber = ISBNNumber;
         this.title = title;
         this.bookGenre = bookGenre;
         this.author = author;
-    }
-
-    public String getName() {
-        return title;
-    }
-
-    public void setName(String title) {
-        this.title = title;
     }
 
     public Integer getISBNNumber() {
@@ -44,6 +38,14 @@ public class Book {
 
     public void setISBNNumber(Integer ISBNNumber) {
         this.ISBNNumber = ISBNNumber;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public BookGenre getBookGenre() {

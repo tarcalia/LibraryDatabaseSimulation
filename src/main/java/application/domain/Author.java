@@ -2,12 +2,7 @@ package application.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +17,6 @@ public class Author {
     @Column(name = "author_Id")
     private Long authorId;
     private String name;
-    private boolean popular;
 
     @JsonBackReference
     @OneToMany(mappedBy = "author")
@@ -51,25 +45,17 @@ public class Author {
         this.name = name;
     }
 
-    public boolean isPopular() {
-        return popular;
-    }
-
-    public void setPopular(boolean popular) {
-        this.popular = popular;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Author author = (Author) o;
-        return popular == author.popular && Objects.equals(authorId, author.authorId) && Objects.equals(name, author.name);
+        return Objects.equals(authorId, author.authorId) && Objects.equals(name, author.name) && Objects.equals(book, author.book);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authorId, name, popular);
+        return Objects.hash(authorId, name, book);
     }
 
     @Override
@@ -77,8 +63,7 @@ public class Author {
         return "Author{" +
                 "authorId=" + authorId +
                 ", name='" + name + '\'' +
-                ", popular=" + popular +
+                ", book=" + book +
                 '}';
     }
-
 }

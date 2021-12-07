@@ -30,7 +30,7 @@
 
         <label for="author">Authors:</label>
         <select name="author" id="author">
-            <option th:each="author: ${authors}" th:value="${authors}" th:text="${author.name}">
+            <option th:each="author: ${authors}" th:value="${author}" th:text="${author.name}">
             </option>
         </select>
 
@@ -49,12 +49,16 @@
             <th class="title">Title</th>
             <th class="genre">Genre</th>
             <th class="author">Author</th>
+            <th class="action">Action</th>
         </tr>
         <tr th:each="book: ${books}">
             <td th:text="${book.ISBNNumber}" />
             <td th:text="${book.title}" />
-            <td th:text="${book.genre}" />
+            <td th:text="${book.bookGenre.label}" />
             <td th:text="${book.author.name}" />
+            <td><a href="/deleteBook">Delete book</a></td>
+
+
         </tr>
     </table><br><br>
 
@@ -64,8 +68,8 @@
         <input type="submit" value="Add Author">
     </form>
 
-    <form action="delete">
-        <label for="id">Delete user by id:</label>
+    <form action="deleteAuthor">
+        <label for="id">Delete author</label>
         <input type="number" id="id" name="id"><br><br>
         <input type="submit" value="Delete User">
     </form>
