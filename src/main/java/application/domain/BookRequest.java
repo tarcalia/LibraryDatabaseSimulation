@@ -9,15 +9,17 @@ import application.controller.HomeController;
 public class BookRequest {
     private Integer ISBNNumber;
     private String title;
+    private Integer quantity;
     private String bookGenre;
     private String author;
 
     public BookRequest() {
     }
 
-    public BookRequest(Integer ISBNNumber, String title, String bookGenre, String author) {
+    public BookRequest(Integer ISBNNumber, String title, Integer quantity, String bookGenre, String author) {
         this.ISBNNumber = ISBNNumber;
         this.title = title;
+        this.quantity = quantity;
         this.bookGenre = bookGenre;
         this.author = author;
     }
@@ -36,6 +38,14 @@ public class BookRequest {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public String getBookGenre() {
@@ -58,22 +68,23 @@ public class BookRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BookRequest bookRequest = (BookRequest) o;
-        return Objects.equals(ISBNNumber, bookRequest.ISBNNumber) && Objects.equals(title, bookRequest.title) && bookGenre == bookRequest.bookGenre && Objects.equals(author, bookRequest.author);
+        BookRequest that = (BookRequest) o;
+        return Objects.equals(ISBNNumber, that.ISBNNumber) && Objects.equals(title, that.title) && Objects.equals(quantity, that.quantity) && Objects.equals(bookGenre, that.bookGenre) && Objects.equals(author, that.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ISBNNumber, title, bookGenre, author);
+        return Objects.hash(ISBNNumber, title, quantity, bookGenre, author);
     }
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "BookRequest{" +
                 "ISBNNumber=" + ISBNNumber +
                 ", title='" + title + '\'' +
-                ", bookGenre=" + bookGenre +
-                ", author=" + author +
+                ", quantity=" + quantity +
+                ", bookGenre='" + bookGenre + '\'' +
+                ", author='" + author + '\'' +
                 '}';
     }
 }

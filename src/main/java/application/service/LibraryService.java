@@ -2,6 +2,7 @@ package application.service;
 
 import application.domain.Author;
 import application.domain.Book;
+import application.domain.BookGenre;
 import application.domain.BookRequest;
 import application.controller.HomeController;
 
@@ -22,12 +23,10 @@ public interface LibraryService {
 
     void saveAuthorEntity(String name);
 
-    List<Book> searchBookByName(String search);
-
-    List<Book> searchBookByAuthor(String search);
-
-    List<Book> searchBookByISBN(String search);
+    Book findBookById(String search);
 
     List<Book> search(String search);
+
+    void updateBook(BookRequest bookRequest);
 
 }

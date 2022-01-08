@@ -14,6 +14,7 @@ public class Book {
     private Integer ISBNNumber;
     private String title;
     private BookGenre bookGenre;
+    private Integer quantity;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "authorId", referencedColumnName = "author_Id")
@@ -22,9 +23,10 @@ public class Book {
     public Book() {
     }
 
-    public Book(Integer ISBNNumber, String title, BookGenre bookGenre, Author author) {
+    public Book(Integer ISBNNumber, String title, Integer quantity, BookGenre bookGenre, Author author) {
         this.ISBNNumber = ISBNNumber;
         this.title = title;
+        this.quantity = quantity;
         this.bookGenre = bookGenre;
         this.author = author;
     }
@@ -43,6 +45,14 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public BookGenre getBookGenre() {

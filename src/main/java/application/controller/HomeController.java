@@ -6,6 +6,7 @@ import application.domain.BookRequest;
 import application.service.LibraryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -80,4 +81,33 @@ public class HomeController {
         return MAIN_PAGE;
     }
 
+    @RequestMapping("/edit")
+    public String edit(@RequestParam(value = "isbn") String isbn, Model model) {
+        model.addAttribute("message", "Edit the following book:");
+        model.addAttribute("genres", Arrays.stream(BookGenre.values()).map(b -> b.label).collect(Collectors.toList()));
+        model.addAttribute("authors", libraryService.findAllAuthors().stream().map(Author::getName).collect(Collectors.toList()));
+        model.addAttribute("book", libraryService.findBookById(isbn));
+        return "edit-book";
+    }
+
+    @RequestMapping("/updateBook")
+    public String updateBook(@RequestParam (value = "ISBNNumber") String isbn,
+                             @RequestParam (value = "title") String title,
+                             @RequestParam (value = "quantity") String quantity,
+                             @RequestParam (value = "genre") String genre,
+                             @RequestParam (value = "author") String author,
+                             Model model) {
+        BookRequest bookRequest = new BookRequest();
+        bookRequest.setISBNNumber(Integer.parseInt(isbn));
+        bookRequest.setTitle(title);
+        bookRequest.setAuthor(author);
+        bookRequest.setBookGenre(genre);
+        bookRequest.setQuantity(Integer.parseInt(quantity));
+        libraryService.updateBook(bookRequest);
+        model.addAttribute("message", "Book updated");
+        model.addAttribute("genres", Arrays.stream(BookGenre.values()).map(b -> b.label).collect(Collectors.toList()));
+        model.addAttribute("authors", libraryService.findAllAuthors().stream().map(Author::getName).collect(Collectors.toList()));
+        model.addAttribute("books", libraryService.findAllBooks());
+        return MAIN_PAGE;
+    }
 }

@@ -47,6 +47,7 @@
         <tr>
             <th class="isbn">ISBN Number</th>
             <th class="title">Title</th>
+            <th class="genre">Available quantity</th>
             <th class="genre">Genre</th>
             <th class="author">Author</th>
             <th class="action">Action</th>
@@ -54,12 +55,13 @@
         <tr th:each="book: ${books}">
             <td th:text="${book.ISBNNumber}" />
             <td th:text="${book.title}" />
+            <td th:text="${book.quantity}" />
             <td th:text="${book.bookGenre.label}" />
             <td th:text="${book.author.name}" />
             <td>
-                <form action="deleteBook">
+                <form action="edit">
                     <input type="number" id="isbn" name="isbn" th:value="${book.ISBNNumber}" hidden>
-                    <input type="submit" value="Delete Book">
+                    <input type="submit" value="Edit Book">
                 </form>
             </td>
         </tr>

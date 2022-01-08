@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Service class for {@link HomeController}.
@@ -45,7 +44,7 @@ public class LibraryHandler implements LibraryService {
             throw new IllegalArgumentException("Received book is null");
         }
         Author author = authorRepository.findByName(bookRequest.getAuthor());
-        bookRepository.save(new Book(bookRequest.getISBNNumber(), bookRequest.getTitle(), BookGenre.getBookGenreValue(bookRequest.getBookGenre()), author));
+        bookRepository.save(new Book(bookRequest.getISBNNumber(), bookRequest.getTitle(), 1, BookGenre.getBookGenreValue(bookRequest.getBookGenre()), author));
     }
 
     @Override
@@ -59,27 +58,31 @@ public class LibraryHandler implements LibraryService {
     }
 
     @Override
-    public List<Book> searchBookByName(String search) {
-        return bookRepository.findAll().stream().filter(b -> b.getTitle().toLowerCase().contains(search.toLowerCase())).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Book> searchBookByAuthor(String search) {
-        return bookRepository.findAll().stream().filter(a -> a.getAuthor().getName().toLowerCase().contains(search.toLowerCase())).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Book> searchBookByISBN(String search) {
-        return bookRepository.findAll().stream().filter(b -> b.getISBNNumber().toString().toLowerCase().contains(search.toLowerCase())).collect(Collectors.toList());
+    public Book findBookById(String search) {
+        return bookRepository.findByISBNNumber(Integer.parseInt(search));
     }
 
     @Override
     public List<Book> search(String search) {
         Set<Book> result = new HashSet<>();
-        result.addAll(searchBookByISBN(search));
-        result.addAll(searchBookByName(search));
-        result.addAll(searchBookByAuthor(search));
+        try {
+            result.add(bookRepository.findByISBNNumber(Integer.valueOf(search)));
+        } catch (NumberFormatException ignored) {
+        }
+        result.addAll(bookRepository.findByTitleContaining(search));
+        result.addAll(bookRepository.findByAuthorNameContaining(search));
         return new ArrayList<>(result);
+    }
+
+    @Override
+    public void updateBook(BookRequest bookRequest) {
+        Book updatedBook = bookRepository.findByISBNNumber(bookRequest.getISBNNumber());
+        updatedBook.setTitle(bookRequest.getTitle());
+        Author author = authorRepository.findByName(bookRequest.getAuthor());
+        updatedBook.setAuthor(author);
+        updatedBook.setBookGenre(BookGenre.getBookGenreValue(bookRequest.getBookGenre()));
+        updatedBook.setQuantity(bookRequest.getQuantity());
+        bookRepository.save(updatedBook);
     }
 
 }
