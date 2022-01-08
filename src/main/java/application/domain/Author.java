@@ -1,9 +1,10 @@
 package application.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
 import java.util.Objects;
 
 /**
@@ -17,10 +18,6 @@ public class Author {
     @Column(name = "author_Id")
     private Long authorId;
     private String name;
-
-    @JsonBackReference
-    @OneToMany(mappedBy = "author")
-    private List<Book> book;
 
     public Author() {
     }
@@ -50,12 +47,12 @@ public class Author {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Author author = (Author) o;
-        return Objects.equals(authorId, author.authorId) && Objects.equals(name, author.name) && Objects.equals(book, author.book);
+        return Objects.equals(authorId, author.authorId) && Objects.equals(name, author.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authorId, name, book);
+        return Objects.hash(authorId, name);
     }
 
     @Override
@@ -63,7 +60,6 @@ public class Author {
         return "Author{" +
                 "authorId=" + authorId +
                 ", name='" + name + '\'' +
-                ", book=" + book +
                 '}';
     }
 }

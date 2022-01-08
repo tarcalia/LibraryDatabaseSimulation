@@ -15,32 +15,32 @@
     <hr>
      <p th:text = ${message}> </p>
     </hr>
-    <form action="uploadBook">
+    <form  method="post" action="uploadBook">
         <label for="title">Title:</label>
         <input type="text" id="title" name="title">
 
-        <label for="isbn">ISBN Nr:</label>
-        <input type="number" id="isbn" name="isbn">
+        <label for="ISBNNumber">ISBN Nr:</label>
+        <input type="number" id="ISBNNumber" name="ISBNNumber">
 
         <label for="genre">Genre:</label>
         <select name="genre" id="genre">
-            <option th:each="genres: ${genres}" th:value="${genres}" th:text="${genres.label}">
+            <option th:each="genre: ${genres}" th:value="${genre}" th:text="${genre}">
             </option>
         </select>
 
         <label for="author">Authors:</label>
         <select name="author" id="author">
-            <option th:each="author: ${authors}" th:value="${author}" th:text="${author.name}">
+            <option th:each="author: ${authors}" th:value="${author}" th:text="${author}">
             </option>
         </select>
 
         <input type="submit" value="Upload Book"><br><br>
     </form>
 
-    <form action="searchBook">
-        <label for="id">Search book:</label>
-        <input type="number" id="id" name="id" style="width:80%">
-        <input type="submit" value="Search User"><br><br>
+    <form action="search">
+        <label for="searchedItem">Search for book/author:</label>
+        <input type="text" id="searchedItem" name="searchedItem" style="width:80%">
+        <input type="submit" value="Search Book/Author"><br><br>
     </form>
 
     <table>
@@ -56,9 +56,12 @@
             <td th:text="${book.title}" />
             <td th:text="${book.bookGenre.label}" />
             <td th:text="${book.author.name}" />
-            <td><a href="/deleteBook">Delete book</a></td>
-
-
+            <td>
+                <form action="deleteBook">
+                    <input type="number" id="isbn" name="isbn" th:value="${book.ISBNNumber}" hidden>
+                    <input type="submit" value="Delete Book">
+                </form>
+            </td>
         </tr>
     </table><br><br>
 
@@ -66,12 +69,6 @@
         <label for="name">Author:</label>
         <input type="name" id="name" name="name">
         <input type="submit" value="Add Author">
-    </form>
-
-    <form action="deleteAuthor">
-        <label for="id">Delete author</label>
-        <input type="number" id="id" name="id"><br><br>
-        <input type="submit" value="Delete User">
     </form>
 
 </div>

@@ -1,28 +1,21 @@
 package application.domain;
 
-import javax.persistence.*;
 import java.util.Objects;
+import application.controller.HomeController;
 
 /**
- * Domain class for {@link Book} objects.
+ * Domain class for {@link BookRequest} object to for {@link HomeController}.
  */
-@Entity
-@Table(name = "book")
-public class Book {
-
-    @Id
+public class BookRequest {
     private Integer ISBNNumber;
     private String title;
-    private BookGenre bookGenre;
+    private String bookGenre;
+    private String author;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "authorId", referencedColumnName = "author_Id")
-    private Author author;
-
-    public Book() {
+    public BookRequest() {
     }
 
-    public Book(Integer ISBNNumber, String title, BookGenre bookGenre, Author author) {
+    public BookRequest(Integer ISBNNumber, String title, String bookGenre, String author) {
         this.ISBNNumber = ISBNNumber;
         this.title = title;
         this.bookGenre = bookGenre;
@@ -45,19 +38,19 @@ public class Book {
         this.title = title;
     }
 
-    public BookGenre getBookGenre() {
+    public String getBookGenre() {
         return bookGenre;
     }
 
-    public void setBookGenre(BookGenre bookGenre) {
+    public void setBookGenre(String bookGenre) {
         this.bookGenre = bookGenre;
     }
 
-    public Author getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 
@@ -65,8 +58,8 @@ public class Book {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return Objects.equals(ISBNNumber, book.ISBNNumber) && Objects.equals(title, book.title) && bookGenre == book.bookGenre && Objects.equals(author, book.author);
+        BookRequest bookRequest = (BookRequest) o;
+        return Objects.equals(ISBNNumber, bookRequest.ISBNNumber) && Objects.equals(title, bookRequest.title) && bookGenre == bookRequest.bookGenre && Objects.equals(author, bookRequest.author);
     }
 
     @Override
@@ -83,5 +76,4 @@ public class Book {
                 ", author=" + author +
                 '}';
     }
-
 }

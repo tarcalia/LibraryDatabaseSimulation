@@ -1,17 +1,33 @@
 package application.service;
 
+import application.domain.Author;
 import application.domain.Book;
-import application.domain.BookGenre;
+import application.domain.BookRequest;
+import application.controller.HomeController;
 
 import java.util.List;
 
+/**
+ * Service interface for {@link HomeController};
+ */
 public interface LibraryService {
 
-    Book findBookByTitle(String title);
+    List<Author> findAllAuthors();
 
-    Book findBookByISBN(Integer isbnNumber);
+    List<Book> findAllBooks();
 
-    List<Book> findBooksByAuthor(String author);
+    void saveBookEntity(BookRequest bookRequest);
 
-    List<Book> findBooksByGenre(Enum<BookGenre> genre);
+    void deleteBookEntity(Integer isbn);
+
+    void saveAuthorEntity(String name);
+
+    List<Book> searchBookByName(String search);
+
+    List<Book> searchBookByAuthor(String search);
+
+    List<Book> searchBookByISBN(String search);
+
+    List<Book> search(String search);
+
 }
