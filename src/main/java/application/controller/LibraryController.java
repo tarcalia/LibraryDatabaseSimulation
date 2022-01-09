@@ -3,10 +3,10 @@ package application.controller;
 import application.domain.Author;
 import application.domain.BookGenre;
 import application.domain.BookRequest;
+import application.service.CustomerService;
 import application.service.LibraryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,20 +17,26 @@ import java.util.stream.Collectors;
  * Main controller for Spring Boot application
  */
 @Controller
-public class HomeController {
+public class LibraryController {
     private final String MAIN_PAGE = "index";
+    private final String INFORMATION = "information";
     private LibraryService libraryService;
 
-    public HomeController(LibraryService libraryService) {
+    public LibraryController(LibraryService libraryService) {
         this.libraryService = libraryService;
     }
 
     @RequestMapping("/")
     public String mainPage(Model model) {
-        model.addAttribute("genres", Arrays.stream(BookGenre.values()).map(b -> b.label).collect(Collectors.toList()));
-        model.addAttribute("authors", libraryService.findAllAuthors().stream().map(Author::getName).collect(Collectors.toList()));
         model.addAttribute("books", libraryService.findAllBooks());
         return MAIN_PAGE;
+    }
+
+    @RequestMapping("/upload")
+    public String upload(Model model) {
+        model.addAttribute("genres", Arrays.stream(BookGenre.values()).map(b -> b.label).collect(Collectors.toList()));
+        model.addAttribute("authors", libraryService.findAllAuthors().stream().map(Author::getName).collect(Collectors.toList()));
+        return "upload";
     }
 
     @RequestMapping("/uploadBook")
@@ -65,20 +71,14 @@ public class HomeController {
     public String deleteBook(@RequestParam(value = "isbn") String isbn, Model model) {
         libraryService.deleteBookEntity(Integer.valueOf(isbn));
         model.addAttribute("message", "Book deleted");
-        model.addAttribute("genres", Arrays.stream(BookGenre.values()).map(b -> b.label).collect(Collectors.toList()));
-        model.addAttribute("authors", libraryService.findAllAuthors().stream().map(Author::getName).collect(Collectors.toList()));
-        model.addAttribute("books", libraryService.findAllBooks());
-        return MAIN_PAGE;
+        return INFORMATION;
     }
 
     @RequestMapping("/addAuthor")
     public String addAuthor(@RequestParam(value = "name") String name, Model model) {
         libraryService.saveAuthorEntity(name);
         model.addAttribute("message",  name + " added");
-        model.addAttribute("genres", Arrays.stream(BookGenre.values()).map(b -> b.label).collect(Collectors.toList()));
-        model.addAttribute("authors", libraryService.findAllAuthors().stream().map(Author::getName).collect(Collectors.toList()));
-        model.addAttribute("books", libraryService.findAllBooks());
-        return MAIN_PAGE;
+        return INFORMATION;
     }
 
     @RequestMapping("/edit")
@@ -110,4 +110,19 @@ public class HomeController {
         model.addAttribute("books", libraryService.findAllBooks());
         return MAIN_PAGE;
     }
+
+    @RequestMapping("/returnBook")
+    public String returnBook(Model model) {
+        model.addAttribute("message", "Books to return");
+        model.addAttribute("bookOrders", libraryService.findAllBookOrder());
+        return "return-book";
+    }
+
+    @RequestMapping("return")
+    public String returned(@RequestParam(value = "isbn") String isbn, Model model) {
+        libraryService.returnBook(Integer.parseInt(isbn));
+        model.addAttribute("message", "Book returned");
+        return INFORMATION;
+    }
+
 }

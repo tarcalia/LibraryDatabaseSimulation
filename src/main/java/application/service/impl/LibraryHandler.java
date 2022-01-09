@@ -1,31 +1,34 @@
 package application.service.impl;
 
-import application.domain.Author;
-import application.domain.Book;
-import application.domain.BookGenre;
-import application.domain.BookRequest;
+import application.domain.*;
 import application.repository.AuthorRepository;
 import application.repository.BookRepository;
+import application.repository.BookOrderRepository;
+import application.repository.CustomerRepository;
 import application.service.LibraryService;
 import org.springframework.stereotype.Service;
-import application.controller.HomeController;
+import application.controller.LibraryController;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Service class for {@link HomeController}.
+ * Service class for {@link LibraryController}.
  */
 @Service
 public class LibraryHandler implements LibraryService {
     private BookRepository bookRepository;
     private AuthorRepository authorRepository;
+    private BookOrderRepository bookOrderRepository;
+    private CustomerRepository customerRepository;
 
-    public LibraryHandler(BookRepository bookRepository, AuthorRepository authorRepository) {
+    public LibraryHandler(BookRepository bookRepository,
+                          AuthorRepository authorRepository,
+                          BookOrderRepository bookOrderRepository,
+                          CustomerRepository customerRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
+        this.bookOrderRepository = bookOrderRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -83,6 +86,34 @@ public class LibraryHandler implements LibraryService {
         updatedBook.setBookGenre(BookGenre.getBookGenreValue(bookRequest.getBookGenre()));
         updatedBook.setQuantity(bookRequest.getQuantity());
         bookRepository.save(updatedBook);
+    }
+
+    @Override
+    public void orderBook(Integer isbn, Integer customerId) {
+        Customer orderingCustomer;
+        try {
+            orderingCustomer = customerRepository.getById(customerId);
+            Book preOrderedBook = bookRepository.findByISBNNumber(isbn);
+            preOrderedBook.setQuantity(preOrderedBook.getQuantity() - 1);
+            bookRepository.save(preOrderedBook);
+            bookOrderRepository.save(new BookOrder(preOrderedBook, orderingCustomer));
+        } catch (Exception e) {
+            throw new NoSuchElementException("No customer found with this id");
+        }
+    }
+
+    @Override
+    public List<BookOrder> findAllBookOrder() {
+        return bookOrderRepository.findAll();
+    }
+
+    @Override
+    public void returnBook(Integer orderId) {
+        BookOrder orderBookToReturn = bookOrderRepository.findById(orderId).get();
+        Book returningBook = bookRepository.findByISBNNumber(orderBookToReturn.getBook().getISBNNumber());
+        returningBook.setQuantity(returningBook.getQuantity() + 1);
+        bookRepository.save(returningBook);
+        bookOrderRepository.delete(orderBookToReturn);
     }
 
 }

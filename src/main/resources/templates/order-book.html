@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+        <head>
+        <meta charset="UTF-8">
+        <title>Library Database - Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<br>
+<div>
+    <h2>
+        Library Database<br> <br>
+    </h2>
+    <hr>
+    <h3 th:text=${message}></h3>
+    </hr>
+    <table>
+        <tr>
+            <th class="isbn">ISBN Number</th>
+            <th class="title">Title</th>
+            <th class="genre">Quantity</th>
+            <th class="genre">Genre</th>
+            <th class="author">Author</th>
+        </tr>
+        <tr>
+            <td th:text="${book.ISBNNumber}"/>
+            <td th:text="${book.title}"/>
+            <td th:text="${book.quantity}"/>
+            <td th:text="${book.bookGenre.label}"/>
+            <td th:text="${book.author.name}"/>
+        </tr>
+    </table>
+    <br><br>
+    <form method="post" action="ordered">
+        <input type="number" id="ISBNNumber" name="ISBNNumber" th:value="${book.ISBNNumber}" hidden>
+        <label for="customerId">Customer Id:</label>
+        <input type="text" id="customerId" name="customerId">
+        <input type="submit" value="Order book"><br><br>
+    </form>
+
+</div>
+</body>
+</html>

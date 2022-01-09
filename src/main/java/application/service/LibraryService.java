@@ -2,14 +2,14 @@ package application.service;
 
 import application.domain.Author;
 import application.domain.Book;
-import application.domain.BookGenre;
+import application.domain.BookOrder;
 import application.domain.BookRequest;
-import application.controller.HomeController;
+import application.controller.LibraryController;
 
 import java.util.List;
 
 /**
- * Service interface for {@link HomeController};
+ * Service interface for {@link LibraryController};
  */
 public interface LibraryService {
 
@@ -29,4 +29,9 @@ public interface LibraryService {
 
     void updateBook(BookRequest bookRequest);
 
+    void orderBook(Integer isbn, Integer customerId);
+
+    List<BookOrder> findAllBookOrder();
+
+    void returnBook(Integer orderId);
 }

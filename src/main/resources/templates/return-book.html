@@ -54,29 +54,23 @@
 
     <table>
         <tr>
-            <th class="isbn">ISBN Number</th>
+            <th class="orderId">Order Id</th>
+            <th class="title">ISBN Number</th>
             <th class="title">Title</th>
-            <th class="genre">Available quantity</th>
-            <th class="genre">Genre</th>
-            <th class="author">Author</th>
+            <th class="genre">Customer ID</th>
+            <th class="genre">Customer name</th>
             <th class="action">Action</th>
         </tr>
-        <tr th:each="book: ${books}">
-            <td th:text="${book.ISBNNumber}"/>
-            <td th:text="${book.title}"/>
-            <td th:text="${book.quantity}"/>
-            <td th:text="${book.bookGenre.label}"/>
-            <td th:text="${book.author.name}"/>
+        <tr th:each="order: ${bookOrders}">
+            <td th:text="${order.orderId}"/>
+            <td th:text="${order.book.ISBNNumber}"/>
+            <td th:text="${order.book.title}"/>
+            <td th:text="${order.customer.customerId}"/>
+            <td th:text="${order.customer.customerName}"/>
             <td>
-                <form action="edit">
-                    <input type="number" id="isbn" name="isbn" th:value="${book.ISBNNumber}" hidden>
-                    <input type="submit" value="Edit Book">
-                </form>
-            </td>
-            <td>
-                <form action="orderBook">
-                    <input type="number" id="isbnForOrder" name="isbnForOrder" th:value="${book.ISBNNumber}" hidden>
-                    <input type="submit" value="Order book">
+                <form action="return">
+                    <input type="number" id="isbn" name="isbn" th:value="${order.orderId}" hidden>
+                    <input type="submit" value="Return Book">
                 </form>
             </td>
         </tr>

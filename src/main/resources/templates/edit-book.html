@@ -2,64 +2,67 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Library Database</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Library Database</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <br>
 <div>
-  <h2>
-    Library Database<br> <br>
-  </h2>
-  <hr>
-  <p th:text = ${message}> </p>
-  </hr>
-   <table>
-    <tr>
-      <th class="isbn">ISBN Number</th>
-      <th class="title">Title</th>
-      <th class="genre">Genre</th>
-      <th class="genre">Quantity</th>
-      <th class="author">Author</th>
-    </tr>
-    <tr>
-      <td th:text="${book.ISBNNumber}" />
-      <td th:text="${book.title}" />
-      <td th:text="${book.quantity}" />
-      <td th:text="${book.bookGenre.label}" />
-      <td th:text="${book.author.name}" />
-    </tr>
-  </table><br><br>
-  
-  <form  method="put" action="updateBook">
-    <input type="number" id="ISBNNumber" name="ISBNNumber" th:value="${book.ISBNNumber}" hidden>
+    <h2>
+        Library Database<br> <br>
+    </h2>
+    <hr>
+    <h3 th:text=${message}></h3>
+    </hr>
+    <table>
+        <tr>
+            <th class="isbn">ISBN Number</th>
+            <th class="title">Title</th>
+            <th class="genre">Genre</th>
+            <th class="genre">Quantity</th>
+            <th class="author">Author</th>
+        </tr>
+        <tr>
+            <td th:text="${book.ISBNNumber}"/>
+            <td th:text="${book.title}"/>
+            <td th:text="${book.quantity}"/>
+            <td th:text="${book.bookGenre.label}"/>
+            <td th:text="${book.author.name}"/>
+        </tr>
+    </table>
+    <br><br>
 
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" th:value="${book.title}">
+    <form method="put" action="updateBook">
+        <input type="number" id="ISBNNumber" name="ISBNNumber" th:value="${book.ISBNNumber}" hidden>
 
-    <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" name="quantity" th:value="${book.quantity}">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" th:value="${book.title}">
 
-    <label for="genre">Genre:</label>
-    <select name="genre" id="genre">
-      <option th:each="genre: ${genres}" th:value="${genre}" th:selected="${genre==book.bookGenre.label}" th:text="${genre}">
-      </option>
-    </select>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" th:value="${book.quantity}">
 
-    <label for="author">Authors:</label>
-    <select name="author" id="author">
-      <option th:each="author: ${authors}" th:value="${author}" th:selected="${author==book.author.name}" th:text="${author}">
-      </option>
-    </select>
+        <label for="genre">Genre:</label>
+        <select name="genre" id="genre">
+            <option th:each="genre: ${genres}" th:value="${genre}" th:selected="${genre==book.bookGenre.label}"
+                    th:text="${genre}">
+            </option>
+        </select>
 
-    <input type="submit" value="Update Book"><br><br>
-  </form>
-  
-  <form action="deleteBook">
-     <input type="number" id="isbn" name="isbn" th:value="${book.ISBNNumber}" hidden>
-     <input type="submit" value="Delete Book">
-  </form>
+        <label for="author">Authors:</label>
+        <select name="author" id="author">
+            <option th:each="author: ${authors}" th:value="${author}" th:selected="${author==book.author.name}"
+                    th:text="${author}">
+            </option>
+        </select>
+
+        <input type="submit" value="Update Book"><br><br>
+    </form>
+
+    <form action="deleteBook">
+        <input type="number" id="isbn" name="isbn" th:value="${book.ISBNNumber}" hidden>
+        <input type="submit" value="Delete Book">
+    </form>
 
 </div>
 </body>

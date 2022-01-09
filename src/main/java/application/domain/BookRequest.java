@@ -1,10 +1,10 @@
 package application.domain;
 
 import java.util.Objects;
-import application.controller.HomeController;
+import application.controller.LibraryController;
 
 /**
- * Domain class for {@link BookRequest} object to for {@link HomeController}.
+ * Domain class for {@link BookRequest} object to for {@link LibraryController}.
  */
 public class BookRequest {
     private Integer ISBNNumber;
