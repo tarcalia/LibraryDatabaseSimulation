@@ -1,8 +1,6 @@
 package application.controller;
 
-import application.service.CustomerService;
-import application.service.IntToStringService;
-import application.service.LibraryService;
+import application.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +15,14 @@ import application.domain.Customer;
 public class CustomerController {
     private final String INFORMATION = "information";
     private CustomerService customerService;
-    private LibraryService libraryService;
+    private BookService bookService;
+    private OrderService orderService;
     private IntToStringService intToStringService;
 
-    public CustomerController(CustomerService customerService, LibraryService libraryService, IntToStringService intToStringService) {
+    public CustomerController(CustomerService customerService, BookService bookService, OrderService orderService, IntToStringService intToStringService) {
         this.customerService = customerService;
-        this.libraryService = libraryService;
+        this.bookService = bookService;
+        this.orderService = orderService;
         this.intToStringService = intToStringService;
     }
 
@@ -41,7 +41,7 @@ public class CustomerController {
     @RequestMapping("/orderBook")
     public String orderBook(@RequestParam(value = "isbnForOrder") String isbn, Model model) {
         model.addAttribute("message", "Order the following book:");
-        model.addAttribute("book", libraryService.findBookById(intToStringService.convertToInteger(isbn)));
+        model.addAttribute("book", bookService.findBookById(intToStringService.convertToInteger(isbn)));
         return "order-book";
     }
 
@@ -49,7 +49,7 @@ public class CustomerController {
     public String ordered(@RequestParam(value = "ISBNNumber") String isbn,
                           @RequestParam(value = "customerId") String customerId,
                           Model model) {
-        libraryService.orderBook(intToStringService.convertToInteger(isbn), intToStringService.convertToInteger(customerId));
+        orderService.orderBook(intToStringService.convertToInteger(isbn), intToStringService.convertToInteger(customerId));
         model.addAttribute("message", "Customer with ID: "
                                         + customerService.getCustomerById(intToStringService.convertToInteger(customerId)).getCustomerId()
                                         + " taken book");
