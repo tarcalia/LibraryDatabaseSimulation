@@ -3,7 +3,7 @@ package application.controller;
 import application.domain.Author;
 import application.domain.BookGenre;
 import application.domain.BookRequest;
-import application.service.CustomerService;
+import application.service.IntToStringService;
 import application.service.LibraryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +21,11 @@ public class LibraryController {
     private final String MAIN_PAGE = "index";
     private final String INFORMATION = "information";
     private LibraryService libraryService;
+    private IntToStringService intToStringService;
 
-    public LibraryController(LibraryService libraryService) {
+    public LibraryController(LibraryService libraryService, IntToStringService intToStringService) {
         this.libraryService = libraryService;
+        this.intToStringService = intToStringService;
     }
 
     @RequestMapping("/")
@@ -46,7 +48,7 @@ public class LibraryController {
                              @RequestParam (value = "author") String author,
                              Model model) {
         BookRequest bookRequest = new BookRequest();
-        bookRequest.setISBNNumber(Integer.parseInt(isbn));
+        bookRequest.setISBNNumber(intToStringService.convertToInteger(isbn));
         bookRequest.setTitle(title);
         bookRequest.setAuthor(author);
         bookRequest.setBookGenre(genre);
@@ -69,7 +71,7 @@ public class LibraryController {
 
     @RequestMapping("/deleteBook")
     public String deleteBook(@RequestParam(value = "isbn") String isbn, Model model) {
-        libraryService.deleteBookEntity(Integer.valueOf(isbn));
+        libraryService.deleteBookEntity(intToStringService.convertToInteger(isbn));
         model.addAttribute("message", "Book deleted");
         return INFORMATION;
     }
@@ -86,7 +88,7 @@ public class LibraryController {
         model.addAttribute("message", "Edit the following book:");
         model.addAttribute("genres", Arrays.stream(BookGenre.values()).map(b -> b.label).collect(Collectors.toList()));
         model.addAttribute("authors", libraryService.findAllAuthors().stream().map(Author::getName).collect(Collectors.toList()));
-        model.addAttribute("book", libraryService.findBookById(isbn));
+        model.addAttribute("book", libraryService.findBookById(intToStringService.convertToInteger(isbn)));
         return "edit-book";
     }
 
@@ -98,11 +100,11 @@ public class LibraryController {
                              @RequestParam (value = "author") String author,
                              Model model) {
         BookRequest bookRequest = new BookRequest();
-        bookRequest.setISBNNumber(Integer.parseInt(isbn));
+        bookRequest.setISBNNumber(intToStringService.convertToInteger(isbn));
         bookRequest.setTitle(title);
         bookRequest.setAuthor(author);
         bookRequest.setBookGenre(genre);
-        bookRequest.setQuantity(Integer.parseInt(quantity));
+        bookRequest.setQuantity(intToStringService.convertToInteger(quantity));
         libraryService.updateBook(bookRequest);
         model.addAttribute("message", "Book updated");
         model.addAttribute("genres", Arrays.stream(BookGenre.values()).map(b -> b.label).collect(Collectors.toList()));
@@ -120,7 +122,7 @@ public class LibraryController {
 
     @RequestMapping("return")
     public String returned(@RequestParam(value = "isbn") String isbn, Model model) {
-        libraryService.returnBook(Integer.parseInt(isbn));
+        libraryService.returnBook(intToStringService.convertToInteger(isbn));
         model.addAttribute("message", "Book returned");
         return INFORMATION;
     }

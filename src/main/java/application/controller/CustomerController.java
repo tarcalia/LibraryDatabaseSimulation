@@ -1,6 +1,7 @@
 package application.controller;
 
 import application.service.CustomerService;
+import application.service.IntToStringService;
 import application.service.LibraryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,12 @@ public class CustomerController {
     private final String INFORMATION = "information";
     private CustomerService customerService;
     private LibraryService libraryService;
+    private IntToStringService intToStringService;
 
-    public CustomerController(CustomerService customerService, LibraryService libraryService) {
+    public CustomerController(CustomerService customerService, LibraryService libraryService, IntToStringService intToStringService) {
         this.customerService = customerService;
         this.libraryService = libraryService;
+        this.intToStringService = intToStringService;
     }
 
     @RequestMapping("/customerRegistration")
@@ -38,7 +41,7 @@ public class CustomerController {
     @RequestMapping("/orderBook")
     public String orderBook(@RequestParam(value = "isbnForOrder") String isbn, Model model) {
         model.addAttribute("message", "Order the following book:");
-        model.addAttribute("book", libraryService.findBookById(isbn));
+        model.addAttribute("book", libraryService.findBookById(intToStringService.convertToInteger(isbn)));
         return "order-book";
     }
 
@@ -46,9 +49,9 @@ public class CustomerController {
     public String ordered(@RequestParam(value = "ISBNNumber") String isbn,
                           @RequestParam(value = "customerId") String customerId,
                           Model model) {
-        libraryService.orderBook(Integer.parseInt(isbn), Integer.parseInt(customerId));
+        libraryService.orderBook(intToStringService.convertToInteger(isbn), intToStringService.convertToInteger(customerId));
         model.addAttribute("message", "Customer with ID: "
-                                        + customerService.getCustomerById(Integer.parseInt(customerId)).getCustomerId()
+                                        + customerService.getCustomerById(intToStringService.convertToInteger(customerId)).getCustomerId()
                                         + " taken book");
         return INFORMATION;
     }

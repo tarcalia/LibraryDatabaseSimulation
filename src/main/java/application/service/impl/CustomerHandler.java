@@ -21,13 +21,17 @@ public class CustomerHandler implements CustomerService {
     @Override
     public void registerCustomer(String name) {
         if (!isNameValid(name)) {
-            throw new IllegalArgumentException("Given name is is not valid");
+            throw new IllegalArgumentException("Given name is not valid");
+        } else {
+            customerRepository.save(new Customer(name));
         }
-        customerRepository.save(new Customer(name));
     }
 
     @Override
     public Customer getCustomerById(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id parameter at getCustomerById is null");
+        }
         return customerRepository.findByCustomerId(id);
     }
 
