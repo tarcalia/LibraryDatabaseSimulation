@@ -40,12 +40,11 @@ public class CustomerHandler implements CustomerService {
         return customerRepository.findAll();
     }
 
-    private boolean isNameValid(String name) {
-        boolean isValid = true;
+    @Override
+    public boolean isNameValid(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Null value added at name when registering customer");
         }
-        isValid = name.matches("([A-Za-z\\.\\s]){3,30}");
-        return isValid;
+        return name.matches("([A-Za-z\\.\\s]){3,30}");
     }
 }

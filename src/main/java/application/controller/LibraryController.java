@@ -3,7 +3,10 @@ package application.controller;
 import application.domain.Author;
 import application.domain.BookGenre;
 import application.domain.BookRequest;
-import application.service.*;
+import application.service.IntToStringService;
+import application.service.AuthorService;
+import application.service.BookService;
+import application.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,14 +25,13 @@ public class LibraryController {
     private IntToStringService intToStringService;
     private AuthorService authorService;
     private BookService bookService;
-    private CustomerService customerService;
     private OrderService orderService;
 
-    public LibraryController(IntToStringService intToStringService, AuthorService authorService, BookService bookService, CustomerService customerService, OrderService orderService) {
+    public LibraryController(IntToStringService intToStringService, AuthorService authorService,
+                             BookService bookService, OrderService orderService) {
         this.intToStringService = intToStringService;
         this.authorService = authorService;
         this.bookService = bookService;
-        this.customerService = customerService;
         this.orderService = orderService;
     }
 

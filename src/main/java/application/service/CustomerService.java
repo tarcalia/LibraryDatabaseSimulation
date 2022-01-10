@@ -27,4 +27,11 @@ public interface CustomerService {
      * @return the existing {@link Customer}s.
      */
     List<Customer> getAllCustomer();
+
+    /**
+     * Checks if given name is valid for a {@link Customer} or not.
+     * @param name which should be tested.
+     * @return true is name is valid.
+     */
+    boolean isNameValid(String name);
 }
