@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+        <head>
+        <meta charset="UTF-8">
+        <title>Library Database - Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<br>
+<div>
+    <h2>
+        Library Database<br> <br>
+    </h2>
+    <table class="header">
+        <tr>
+            <th>
+                <form action="/">
+                    <input type="submit" value="New search">
+                </form>
+            </th>
+            <th>
+                <form action="customerRegistration">
+                    <input type="submit" value="Register Customer">
+                </form>
+            </th>
+            <th>
+                <form action="returnBook">
+                    <input type="submit" value="Return book">
+                </form>
+            </th>
+            <th>
+                <form action="customers">
+                    <input type="submit" value="List customers">
+                </form>
+            </th>
+            <th>
+                <form action="upload">
+                    <input type="submit" value="Upload Book/Author">
+                </form>
+            </th>
+        </tr>
+    </table>
+
+    <hr>
+    <h3>Registration</h3>
+    </hr>
+
+    <form method="post" action="registration">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+
+        <input type="submit" value="Register customer"><br><br>
+    </form>
+
+</div>
+</body>
+</html>

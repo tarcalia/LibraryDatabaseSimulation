@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Database</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<br>
+<div>
+    <h2>
+        Library Database<br> <br>
+    </h2>
+    <table class="header">
+        <tr>
+            <th>
+                <form action="/">
+                    <input type="submit" value="New search">
+                </form>
+            </th>
+            <th>
+                <form action="customerRegistration">
+                    <input type="submit" value="Register Customer">
+                </form>
+            </th>
+            <th>
+                <form action="returnBook">
+                    <input type="submit" value="Return book">
+                </form>
+            </th>
+            <th>
+                <form action="customers">
+                    <input type="submit" value="List customers">
+                </form>
+            </th>
+            <th>
+                <form action="upload">
+                    <input type="submit" value="Upload Book/Author">
+                </form>
+            </th>
+        </tr>
+    </table>
+
+    <hr>
+    <h3 th:text=${message}></h3>
+    </hr>
+
+    <form action="search">
+        <label for="searchedItem">Search for book/author:</label>
+        <input type="text" id="searchedItem" name="searchedItem" style="width:80%">
+        <input type="submit" value="Search Book/Author"><br><br>
+    </form>
+
+    <table>
+        <tr>
+            <th class="isbn">ISBN Number</th>
+            <th class="title">Title</th>
+            <th class="genre">Available quantity</th>
+            <th class="genre">Genre</th>
+            <th class="author">Author</th>
+            <th class="action">Action</th>
+        </tr>
+        <tr th:each="book: ${books}">
+            <td th:text="${book.ISBNNumber}"/>
+            <td th:text="${book.title}"/>
+            <td th:text="${book.quantity}"/>
+            <td th:text="${book.bookGenre.label}"/>
+            <td th:text="${book.author.name}"/>
+            <td>
+                <form action="edit">
+                    <input type="number" id="isbn" name="isbn" th:value="${book.ISBNNumber}" hidden>
+                    <input type="submit" value="Edit Book">
+                </form>
+            </td>
+            <td>
+                <form action="orderBook">
+                    <input type="number" id="isbnForOrder" name="isbnForOrder" th:value="${book.ISBNNumber}" hidden>
+                    <input type="submit" value="Order book">
+                </form>
+            </td>
+        </tr>
+    </table>
+    <br><br>
+</div>
+</body>
+</html>
